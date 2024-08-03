@@ -6,12 +6,11 @@ const Products = new mongoose.Schema({
     unique: [true, "Product name already exists"],
   },
   price: {
-    type: number,
+    type: Number,
     require: [true, "Provide product price"],
   },
   image: {
     type: String,
-    require: [true, "Provide product image"],
   },
   category: {
     type: String,

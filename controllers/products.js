@@ -1,7 +1,7 @@
 const Products = require("../model/Products");
 
 const getAllProducts = async (req, res) => {
-  const products = Products.find({});
+  const products = await Products.find({});
   res.status(200).json({ msg: products });
 };
 const getSingleProduct = async (req, res) => {
@@ -13,8 +13,8 @@ const getSingleProduct = async (req, res) => {
   res.status(200).json({ msg: product });
 };
 const createProduct = async (req, res) => {
-  const { name, price, category } = req.body;
-  const image = req.file.path;
+  const { name, price, category, image } = req.body;
+
   try {
     const newProduct = await Products.create({ name, price, category, image });
     res.status(201).json({ newProduct });
