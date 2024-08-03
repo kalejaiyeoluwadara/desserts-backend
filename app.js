@@ -4,6 +4,8 @@ const app = express();
 const products = require("./routers/products");
 const auth = require("./routers/auth");
 const users = require("./routers/users");
+const notFound = require("./middleware/not-found");
+const errorHandlerMiddleWare = require("./middleware/error-handler");
 const port = process.env.PORT || 3000;
 app.get("/", (req, res) => {
   res.send(
@@ -14,6 +16,8 @@ app.use(express.json());
 app.use("/api/v1", products);
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/users", users);
+app.use(notFound);
+app.use(errorHandlerMiddleWare);
 const start = async () => {
   try {
     app.listen(3000, () => {
