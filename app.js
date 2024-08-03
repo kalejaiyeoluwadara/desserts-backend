@@ -6,6 +6,7 @@ const auth = require("./routers/auth");
 const users = require("./routers/users");
 const notFound = require("./middleware/not-found");
 const errorHandlerMiddleWare = require("./middleware/error-handler");
+const connectDB = require("./db/connect");
 const port = process.env.PORT || 3000;
 app.get("/", (req, res) => {
   res.send(
@@ -20,6 +21,7 @@ app.use(notFound);
 app.use(errorHandlerMiddleWare);
 const start = async () => {
   try {
+    await connectDB(process.env.MONGO_URI);
     app.listen(3000, () => {
       console.log(`Listening on port ${port}.`);
     });
