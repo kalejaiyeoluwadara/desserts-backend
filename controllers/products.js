@@ -5,10 +5,22 @@ const getAllProducts = async (req, res) => {
   res.status(200).json({ msg: products });
 };
 const getSingleProduct = async (req, res) => {
-  res.status(200).json({ msg: "single product" });
+  const { id } = req.params;
+  if (!id) {
+    res.status(400).json({ msg: "bad request" });
+  }
+  const product = await Products.findById(id);
+  res.status(200).json({ msg: product });
 };
 const createProduct = async (req, res) => {
-  res.status(201).json({ msg: "created product successfully" });
+  const { name, price, category } = req.body;
+  const image = req.file.path;
+  try {
+    const newProduct = await Products.create({ name, price, category, image });
+    res.status(201).json({ newProduct });
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
 };
 const updateProduct = async (req, res) => {
   res.status(200).json({ msg: "updated product" });

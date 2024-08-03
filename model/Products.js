@@ -18,4 +18,4 @@ const Products = new mongoose.Schema({
     require: [true, "Provide product category"],
   },
 });
-module.exports = Products;
+module.exports = mongoose.model("Products", Products);
