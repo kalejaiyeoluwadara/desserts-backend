@@ -4,6 +4,7 @@ const app = express();
 const products = require("./routers/products");
 const auth = require("./routers/auth");
 const users = require("./routers/users");
+const orders = require("./routers/order");
 const notFound = require("./middleware/not-found");
 const errorHandlerMiddleWare = require("./middleware/error-handler");
 const connectDB = require("./db/connect");
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use("/api/v1", products);
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/users", users);
+app.use("/api/v1/orders", orders);
 app.use(notFound);
 app.use(errorHandlerMiddleWare);
 const start = async () => {
