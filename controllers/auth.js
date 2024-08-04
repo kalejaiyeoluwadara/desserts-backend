@@ -19,6 +19,19 @@ const register = async (req, res) => {
   res.status(200).json({ msg: "Register user" });
 };
 const login = async (req, res) => {
-  res.status(200).json({ msg: "User login" });
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (user && (await user.matchPassword(password))) {
+      res.status(200).json({
+        _id: user._id,
+        email: user.email,
+      });
+    } else {
+      res.status(401).json({ msg: "Invalid email or password" });
+    }
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
+  }
 };
 module.exports = { register, login };
