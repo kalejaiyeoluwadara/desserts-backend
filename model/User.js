@@ -1,30 +1,32 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-const UserSchema = new mongoose.Schema({
-  fullname: {
-    type: String,
-    required: [true, "Provide user full name"],
+
+const UserSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      required: [true, "Username is required"],
+      unique: true, // Ensures no duplicates
+      trim: true,
+    },
+    bankName: {
+      type: String,
+      required: [true, "Bank name is required"],
+      trim: true,
+    },
+    dp: {
+      type: Number,
+      default: 0,
+    },
+    accountNumber: {
+      type: String,
+      required: [true, "Account number is required"],
+      trim: true,
+      match: [/^\d+$/, "Account number must be numeric"], // Ensures only digits
+    },
   },
-  email: {
-    type: String,
-    required: [true, "Provide user email"],
-    unique: [true, "email already exists"],
-  },
-  password: {
-    type: String,
-    required: [true, "Provide user password"],
-  },
-});
-UserSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    return next();
+  {
+    timestamps: true, // Automatically adds createdAt and updatedAt fields
   }
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
-});
-UserSchema.methods.matchPassword = async function (enteredpassword) {
-  return await bcrypt.compare(enteredpassword, this.password);
-};
-const User = mongoose.model("User", UserSchema);
-module.exports = User;
+);
+
+module.exports = mongoose.model("User", UserSchema);
